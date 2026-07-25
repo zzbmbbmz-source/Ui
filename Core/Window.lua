@@ -43,7 +43,7 @@ return function(MyUI, Theme, StatusColors, Utils, Services)
         local subTitle = config.SubTitle or ""
         local size = config.Size or UDim2.fromOffset(760, 460)
         -- Scale = ตัวคูณขนาด UI ทั้งหมด เช่น 0.5 = ครึ่งหนึ่งของขนาดเดิม, 1 = ขนาดปกติ
-        local targetScale = config.Scale or 1
+        local targetScale = config.Scale or 0.7
 
         local ScreenGui = getScreenGui()
 

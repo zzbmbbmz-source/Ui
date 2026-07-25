@@ -1,0 +1,45 @@
+name: Auto Extract ZIP
+
+on:
+  push:
+    paths:
+      - "*.zip"
+
+permissions:
+  contents: write
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract
+        run: |
+          for zip in *.zip; do
+            [ -f "$zip" ] || continue
+
+            unzip -q "$zip"
+
+            folder=$(basename "$zip" .zip)
+
+            if [ -d "$folder" ]; then
+              cp -R "$folder"/. .
+              rm -rf "$folder"
+            fi
+
+            rm "$zip"
+          done
+
+      - name: Commit
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@users.noreply.github.com
+
+          git add .
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Auto Extract ZIP"
+            git push
+          fi
